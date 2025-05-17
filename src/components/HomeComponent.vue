@@ -10,7 +10,8 @@
         </div>
         <nav class="hidden md:flex space-x-8">
           <router-link to="#services" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Servicios</router-link>
-          <router-link to="#terapeutas" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Nuestros Terapeutas</router-link>
+          <router-link to="#terapeutas" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Nuestros
+            Terapeutas</router-link>
           <a href="#how-it-works" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Cómo Funciona</a>
           <a href="#pricing" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Precios</a>
         </nav>
@@ -21,15 +22,15 @@
         </button>
         <div class="flex space-x-8">
           <a href="#book"
-          class="hidden md:block bg-[#7a9e9f] text-white px-6 py-2 rounded-full hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
-          Registrarse
-        </a>
-        <a href="#book"
-              class="bg-[#fcfaf7] text-[#7a9e9f] px-4 py-2 rounded-full text-center hover:shadow-lg transition border-[#7a9e9f] border-1">
-              Iniciar sesión
-            </a>
+            class="hidden md:block bg-[#7a9e9f] text-white px-6 py-2 rounded-full hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+            Registrarse
+          </a>
+          <a href="#book"
+            class="bg-[#fcfaf7] text-[#7a9e9f] px-4 py-2 rounded-full text-center hover:shadow-lg transition border-[#7a9e9f] border-1">
+            Iniciar sesión
+          </a>
         </div>
-        
+
       </div>
       <!-- Mobile menu -->
       <div v-if="mobileMenuOpen" class="md:hidden bg-[#fcfaf7]/90 backdrop-blur-sm px-4 py-2 shadow-md">
@@ -103,7 +104,8 @@
         <div class="text-center max-w-3xl mx-auto mb-12">
           <h2 class="text-3xl font-bold text-gray-800 mb-4">Terapias Online Personalizadas Para Tu Bienestar</h2>
           <p class="text-gray-600">
-            Terapias adaptadas a ti: combinamos distintos métodos psicológicos para ofrecer el tratamiento que mejor se ajuste a tus necesidades
+            Terapias adaptadas a ti: combinamos distintos métodos psicológicos para ofrecer el tratamiento que mejor se
+            ajuste a tus necesidades
           </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -158,8 +160,8 @@
         </div>
         <div class="w-full flex justify-center container mx-auto px-4 mt-8">
           <a href="#book"
-                class="bg-[#7a9e9f] text-white text-xl px-8 py-2 mt-8 rounded-full text-center hover:shadow-lg transition">
-                Conoce a todos nuestros terapeutas
+            class="bg-[#7a9e9f] text-white text-xl px-8 py-2 mt-8 rounded-full text-center hover:shadow-lg transition">
+            Conoce a todos nuestros terapeutas
           </a>
 
         </div>
@@ -242,7 +244,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import ReservarComponent from '@/components/ReservarComponent.vue';
 
@@ -349,7 +351,7 @@ import ReservarComponent from '@/components/ReservarComponent.vue';
         popular: true,
         features: [
           "2 sesiones nutritivas al mes",
-          "Soporte por texto ilimitado",
+          "Soporte por teyxto ilimitado",
           "Biblioteca de meditaciones guiadas",
           "Acceso al diario de bienestar",
           "Ejercicios semanales de mindfulness",
@@ -371,15 +373,4 @@ import ReservarComponent from '@/components/ReservarComponent.vue';
         ],
       },
     ])
-
-    return {
-      mobileMenuOpen,
-      services,
-      therapists,
-      steps,
-      testimonials,
-      plans
-    }
-  }
-}
 </script>
