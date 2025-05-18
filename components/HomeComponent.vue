@@ -21,11 +21,11 @@
           </svg>
         </button>
         <div class="flex space-x-8">
-          <a href="#book"
+          <a href="/register"
             class="hidden md:block bg-[#7a9e9f] text-white px-6 py-2 rounded-full hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
             Registrarse
           </a>
-          <a href="#book"
+          <a href="/login"
             class="bg-[#fcfaf7] text-[#7a9e9f] px-4 py-2 rounded-full text-center hover:shadow-lg transition border-[#7a9e9f] border-1">
             Iniciar sesión
           </a>
@@ -39,12 +39,13 @@
           <a href="#therapists" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Nuestros Terapeutas</a>
           <a href="#how-it-works" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Cómo Funciona</a>
           <a href="#pricing" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Precios</a>
+          <a href="/blog" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Blog</a>
           <div>
-            <a href="#book"
+            <a href="/register"
               class="bg-gradient-to-r from-[#7a9e9f] to-[#b8d8d8] text-white px-0 py-2 rounded-full text-center hover:shadow-lg transition">
               Registrate
             </a>
-            <a href="#book"
+            <a href="/login"
               class="bg-gradient-to-r from-[#7a9e9f] to-[#b8d8d8] text-white px-0 py-2 rounded-full text-center hover:shadow-lg transition">
               Iniciar sesión
             </a>
@@ -75,11 +76,11 @@
             casa.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="#book"
+            <a href="/reservar"
               class="bg-[#7a9e9f] text-white px-8 py-3 rounded-full text-center hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
               Pide tu cita
             </a>
-            <router-link to="/reservar"
+            <router-link to="/login"
               class="border border-[#7a9e9f] text-[#5a7d7c] px-8 py-3 rounded-full text-center hover:bg-[#f8f3eb] transition">
               Inicia sesión
             </router-link>
