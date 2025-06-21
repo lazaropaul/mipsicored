@@ -4,8 +4,16 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
   css: ['~/assets/css/main.css'],
-  modules: ['@nuxt/image', '@nuxt/ui', '@nuxt/eslint'],
+  modules: [
+    '@nuxt/image',
+    '@nuxt/ui',
+    '@nuxt/eslint',
+    '@nuxt/content',
+  ],
   vite: {
     plugins: [
       tailwindcss(),

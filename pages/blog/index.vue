@@ -1,7 +1,12 @@
 <template>
-  <div class="bg-gray-50 min-h-screen">
+  <div class="font-sans bg-[#fcfaf7]">
+  <header
+    class="bg-[#fcfaf7]/90 backdrop-blur-sm shadow-sm top-0 z-99 border-b border-[#e8d5c4]/30 sticky w-full">
+    <NavBar />
+  </header>
+  <div class="min-h-screen">
     <!-- Hero Section -->
-    <div class="bg-white py-12 border-b border-gray-200">
+    <div class="py-16">
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-3xl md:text-4xl font-bold mb-4">Blog de MiPsicoRed</h1>
@@ -12,63 +17,52 @@
       </div>
     </div>
 
-    <!-- Blog Posts Grid -->
-    <div class="container mx-auto px-4 py-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <article 
-          v-for="post in blogPosts" 
-          :key="post.id" 
-          class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:shadow-lg hover:-translate-y-1"
-        >
-          <NuxtLink :to="`/blog/${post.slug}`" class="block">
-            <img 
-              :src="post.image" 
-              :alt="post.title" 
-              class="w-full h-48 object-cover"
-            />
-            <div class="p-6">
-              <div class="flex items-center mb-4">
-                <span class="bg-[#6A9997]/10 text-[#6A9997] text-xs font-medium px-2.5 py-0.5 rounded">
-                  {{ post.category }}
-                </span>
-                <span class="text-gray-500 text-sm ml-auto">{{ post.date }}</span>
-              </div>
-              <h2 class="text-xl font-bold mb-2 text-gray-800">{{ post.title }}</h2>
-              <p class="text-gray-600 mb-4">{{ post.excerpt }}</p>
-              <div class="flex items-center">
-                <img 
-                  :src="post.author.avatar" 
-                  :alt="post.author.name" 
-                  class="w-8 h-8 rounded-full mr-2"
-                />
-                <span class="text-sm text-gray-700">{{ post.author.name }}</span>
-              </div>
-            </div>
-          </NuxtLink>
-        </article>
+    <!-- Blog List Section -->
+    <div class="container mx-auto px-4 flex gap-6">
+      <div class="container mx-auto px-4 py-6 w-8/12">
+        <BlogFeatured />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <BlogPost 
+            v-for="post in blogPosts"
+            :post="post"
+            :key="post.id" 
+          />
+        </div>
       </div>
 
-      <!-- Pagination -->
-      <div class="flex justify-center mt-12">
-        <nav class="inline-flex rounded-md shadow">
-          <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-            Anterior
-          </a>
-          <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-            1
-          </a>
-          <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-[#6A9997] text-sm font-medium text-white">
-            2
-          </a>
-          <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-            3
-          </a>
-          <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-            Siguiente
-          </a>
-        </nav>
+      <div class="container mx-auto px-4 py-6 w-4/12">
+        <BlogSearch />
+        <BlogCategoryFilter />
       </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-12 pb-12">
+          <nav class="inline-flex rounded-md shadow">
+            <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              Anterior
+            </a>
+            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              1
+            </a>
+            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-[#6A9997] text-sm font-medium text-white">
+              2
+            </a>
+            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              3
+            </a>
+            <a href="#" class="px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+              Siguiente
+            </a>
+          </nav>
+    </div>
+
+    <!-- Blog Posts Grid -->
+  </div>
+  
+  <footer class="bg-[#f8f3eb] py-12 border-t border-[#e8d5c4]/30">
+    <Footer />
+  </footer>
   </div>
 </template>
 
