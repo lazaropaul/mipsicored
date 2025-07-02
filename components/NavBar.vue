@@ -10,7 +10,7 @@
           <NuxtLink to="/#terapeutas" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition" onclick='scrollToSection("terapeutas", 100)'>Nuestros Terapeutas</NuxtLink>
           <!-- <router-link to="/#how-it-works" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition" onclick='scrollToSection("services", 100)'>Cómo Funciona</router-link> -->
           <NuxtLink to="/#pricing" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition" onclick='scrollToSection("services", 100)'>Precios</NuxtLink>
-          <NuxtLink to="/blog" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Blog</NuxtLink>
+          <!-- <NuxtLink to="/blog" class="text-[#5a7d7c] hover:text-[#7a9e9f] transition">Blog</NuxtLink> -->
         </nav>
         <div class="flex items-center space-x-8">
             <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-[#5a7d7c]">
