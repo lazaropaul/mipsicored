@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center">
           <NuxtLink to="/">
-            <img src="/images/logo.svg" alt="NatureMind Logo" class="h-12 w-auto" />
+            <img src="/images/logo.svg" alt="MiPsicoRed Logo" class="h-12 w-auto" />
           </NuxtLink>
         </div>
         <nav class="hidden md:flex space-x-8">
