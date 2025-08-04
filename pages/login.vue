@@ -71,8 +71,7 @@
     error.value = null
     
     try {
-      // Here you would implement your actual login logic
-      // For example with Nuxt Auth or a custom authentication service
+      
       await new Promise(resolve => setTimeout(resolve, 1000)) // Simulating API call
       
       // If login is successful, redirect to dashboard or home

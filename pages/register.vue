@@ -1,5 +1,5 @@
 <template>
-    <div class="container flex items-center justify-center min-h-screen py-12 px-4">
+    <div class="min-w-screen container flex items-center justify-center min-h-screen py-6 px-4">
       <div class="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
         <div class="p-6 space-y-6">
           <div class="space-y-2 text-center">
@@ -13,7 +13,7 @@
                 <label for="firstName" class="block text-sm font-medium">Nombre</label>
                 <input 
                   id="firstName" 
-                  v-model="firstName" 
+                  v-model="state.firstName" 
                   type="text" 
                   required
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]"
@@ -24,7 +24,7 @@
                 <label for="lastName" class="block text-sm font-medium">Apellido</label>
                 <input 
                   id="lastName" 
-                  v-model="lastName" 
+                  v-model="state.lastName" 
                   type="text" 
                   required
                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]"
@@ -36,9 +36,21 @@
               <label for="email" class="block text-sm font-medium">Correo electrónico</label>
               <input 
                 id="email" 
-                v-model="email" 
+                v-model="state.email" 
                 type="email" 
                 placeholder="correo@ejemplo.com" 
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label for="phone" class="block text-sm font-medium">Teléfono</label>
+              <input 
+                id="phone" 
+                v-model="state.phone" 
+                type="tel" 
+                placeholder="123-456-7890" 
                 required
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]"
               />
@@ -48,7 +60,7 @@
               <label for="password" class="block text-sm font-medium">Contraseña</label>
               <input 
                 id="password" 
-                v-model="password" 
+                v-model="state.password" 
                 type="password" 
                 required
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]"
@@ -59,7 +71,7 @@
               <label for="confirmPassword" class="block text-sm font-medium">Confirmar contraseña</label>
               <input 
                 id="confirmPassword" 
-                v-model="confirmPassword" 
+                v-model="state.confirmPassword" 
                 type="password" 
                 required
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]"
@@ -104,44 +116,60 @@
   
   <script setup>
   import { ref, computed } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { createClient } from '@supabase/supabase-js'
+  const config = useRuntimeConfig()
+  const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
   
-  const firstName = ref('')
-  const lastName = ref('')
-  const email = ref('')
-  const password = ref('')
-  const confirmPassword = ref('')
+  const state = reactive({
+    email: undefined,
+    password: undefined,
+    confirmPassword: undefined,
+    firstName: undefined,
+    lastName: undefined,
+    phone: undefined,
+  })
+
   const acceptTerms = ref(false)
   const isLoading = ref(false)
   const error = ref(null)
   
-  const router = useRouter()
-  
   const isFormValid = computed(() => {
-    return firstName.value && 
-           lastName.value && 
-           email.value && 
-           password.value && 
-           confirmPassword.value && 
-           password.value === confirmPassword.value && 
+    return state.firstName && 
+           state.lastName && 
+           state.email && 
+           state.password && 
+           state.confirmPassword && 
+           state.password === state.confirmPassword && 
            acceptTerms.value
   })
   
   const handleRegister = async () => {
-    if (!isFormValid.value) return
+    console.log("Hola desde register.vue")
+
+    console.log("State:", state)
     
     isLoading.value = true
     error.value = null
     
     try {
-      // Here you would implement your actual registration logic
-      // For example with Nuxt Auth or a custom authentication service
-      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulating API call
-      
-      // If registration is successful, redirect to login page
-      router.push('/login')
+      const { data, error } = await supabase.auth.signUp(
+        {
+          email: state.email,
+          password: state.password,
+          options: {
+            data: {
+              first_name: state.firstName,
+              last_name: state.lastName
+            },
+            emailRedirectTo: '/dashboard'
+          }
+        }
+      )
+      console.log("DATA:" + data)
+      console.log("ERROR:" + error)
     } catch (err) {
       error.value = 'Error al registrar. Por favor, inténtalo de nuevo.'
+      console.log(err)
     } finally {
       isLoading.value = false
     }
