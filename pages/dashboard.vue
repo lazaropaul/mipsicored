@@ -26,7 +26,7 @@
                 <div class="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
                   <User class="h-4 w-4 text-teal-600" />
                 </div>
-                <span class="text-sm font-medium">{{ user.name }}</span>
+                <span class="text-sm font-medium">{{ profile?.first_name }}</span>
                 <ChevronDown class="h-4 w-4" />
               </button>
               
@@ -86,7 +86,7 @@
         <div class="bg-gradient-to-r from-teal-50 to-green-50 rounded-xl p-6 mb-8 shadow-sm border">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">¡Hola, {{ user.name }}!</h2>
+              <h2 class="text-2xl font-bold text-gray-900 mb-2">¡Hola, {{ profile?.first_name }}!</h2>
               <p class="text-gray-600">Bienvenido a tu panel de terapia online</p>
             </div>
             <div class="hidden md:block">
@@ -424,6 +424,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+const { user, profile } = useAuth()
 import { 
   Bell, User, ChevronDown, Heart, Calendar, CheckCircle, Clock, 
   MoreVertical, Plus, MessageCircle, FileText, BookOpen 
@@ -434,7 +435,8 @@ const activeTab = ref('dashboard')
 const showUserMenu = ref(false)
 const sessionFilter = ref('upcoming')
 
-const user = ref({
+// Renamed to avoid conflict with useAuth's user
+const localUser = ref({
   name: 'Iker',
   email: 'iker@mipsicored.com'
 })
@@ -563,6 +565,7 @@ const handleClickOutside = (event) => {
 if (typeof window !== 'undefined') {
   document.addEventListener('click', handleClickOutside)
 }
+
 </script>
 
 <style scoped>

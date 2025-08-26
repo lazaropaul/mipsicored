@@ -102,6 +102,7 @@
               {{ isLoading ? 'Registrando...' : 'Registrarse' }}
             </button>
           </form>
+          <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
           
           <div class="text-center text-sm">
             ¿Ya tienes una cuenta?
@@ -119,6 +120,10 @@
   import { createClient } from '@supabase/supabase-js'
   const config = useRuntimeConfig()
   const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
+ 
+  definePageMeta({
+    middleware: 'guest'
+  })
   
   const state = reactive({
     email: undefined,
@@ -134,44 +139,54 @@
   const error = ref(null)
   
   const isFormValid = computed(() => {
-    return state.firstName && 
-           state.lastName && 
-           state.email && 
-           state.password && 
-           state.confirmPassword && 
-           state.password === state.confirmPassword && 
-           acceptTerms.value
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return state.firstName &&
+         state.lastName &&
+         emailRegex.test(state.email) &&
+         state.password &&
+         state.confirmPassword &&
+         state.password === state.confirmPassword &&
+         acceptTerms.value
   })
   
   const handleRegister = async () => {
-    console.log("Hola desde register.vue")
+  console.log("Hola desde register.vue", state)
 
-    console.log("State:", state)
-    
-    isLoading.value = true
-    error.value = null
-    
-    try {
-      const { data, error } = await supabase.auth.signUp(
-        {
-          email: state.email,
-          password: state.password,
-          options: {
-            data: {
-              first_name: state.firstName,
-              last_name: state.lastName
-            },
-            emailRedirectTo: '/dashboard'
-          }
-        }
-      )
-      console.log("DATA:" + data)
-      console.log("ERROR:" + error)
-    } catch (err) {
-      error.value = 'Error al registrar. Por favor, inténtalo de nuevo.'
-      console.log(err)
-    } finally {
-      isLoading.value = false
-    }
+  if (!isFormValid.value) {
+    error.value = "Por favor completa todos los campos correctamente."
+    return
   }
+
+  isLoading.value = true
+  error.value = null
+
+  try {
+    const { data, error: supabaseError } = await supabase.auth.signUp({
+      email: state.email,
+      password: state.password,
+      options: {
+        data: {
+          first_name: state.firstName,
+          last_name: state.lastName,
+          phone: state.phone,
+        },
+        // IMPORTANT: redirect here after clicking confirmation link
+        emailRedirectTo: `${window.location.origin}/dashboard`
+      }
+    })
+
+    if (supabaseError) {
+      error.value = supabaseError.message
+      console.error(supabaseError)
+    } else {
+      console.log("User registered:", data)
+      alert("Registro exitoso. Revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.")
+    }
+  } catch (err) {
+    console.error(err)
+    error.value = "Error al registrar. Por favor, inténtalo de nuevo."
+  } finally {
+    isLoading.value = false
+  }
+}
   </script>
