@@ -26,4 +26,9 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_KEY,
     },
   },
+  routeRules: {
+        'login': {
+            ssr: false
+        }
+    }
 })

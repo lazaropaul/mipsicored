@@ -27,6 +27,14 @@ export const useAuth = () => {
     user.value = session?.user || null
     profile.value = session?.user?.user_metadata || null
   })
+  
+   const logout = async () => {
+    if (supabase) {
+      await supabase.auth.signOut()
+    }
+    user.value = null
+    profile.value = null
+  }
 
   return {
     supabase,
@@ -34,5 +42,6 @@ export const useAuth = () => {
     profile,
     loading,
     initAuth,
+    logout
   }
 }

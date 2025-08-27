@@ -10,8 +10,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     data: { session },
   } = await supabase.auth.getSession()
 
-  // Example: Protect all routes starting with /dashboard
   if (to.path.startsWith('/dashboard') && !session) {
     return navigateTo('/login')
   }
+  
 })

@@ -36,7 +36,7 @@
                   <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Mi Perfil</a>
                   <a href="#" @click="activeTab = 'settings'" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Configuración</a>
                   <hr class="my-1">
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Cerrar Sesión</a>
+                  <a @click="handleLogout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Cerrar Sesión</a>
                 </div>
               </div>
             </div>
@@ -345,6 +345,7 @@
                     v-model="settings.name" 
                     type="text" 
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                    disabled
                   >
                 </div>
                 <div>
@@ -424,7 +425,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-const { user, profile } = useAuth()
+const { supabase, user, profile } = useAuth()
 import { 
   Bell, User, ChevronDown, Heart, Calendar, CheckCircle, Clock, 
   MoreVertical, Plus, MessageCircle, FileText, BookOpen 
@@ -435,11 +436,14 @@ const activeTab = ref('dashboard')
 const showUserMenu = ref(false)
 const sessionFilter = ref('upcoming')
 
+const currentUser = await supabase.auth.getUser()
+
 // Renamed to avoid conflict with useAuth's user
-const localUser = ref({
-  name: 'Iker',
-  email: 'iker@mipsicored.com'
-})
+const handleLogout = async () => {
+  const { logout } = useAuth()
+  await logout()
+  navigateTo('/login')
+}
 
 const nextSession = ref({
   date: '15 Ene',
@@ -504,9 +508,9 @@ const bookingForm = ref({
 })
 
 const settings = ref({
-  name: 'María González',
-  email: 'maria@example.com',
-  phone: '+34 600 123 456',
+  name: currentUser.data.user.user_metadata.first_name + ' ' + currentUser.data.user.user_metadata.last_name,
+  email: currentUser.data.user.email,
+  phone: currentUser.data.user.user_metadata.phone,
   notifications: {
     sessions: true,
     resources: false
