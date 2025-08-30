@@ -1,0 +1,12 @@
+name = "psicopito"
+compatibility_date = "2025-08-29"
+main = ".output/server/index.mjs"
+
+[site]
+bucket = ".output/public"   # what gets served (Nuxt build output)
+
+[vars]   # optional: dev vars
+SUPABASE_KEY = "public-anon-key"
+SUPABASE_URL = "public-anon-key"
+NOREPLY_PASSWD = "public-anon-key"
+
