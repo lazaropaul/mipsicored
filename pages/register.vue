@@ -116,8 +116,6 @@ const isFormValid = computed(() => {
 })
 
 const handleRegister = async () => {
-  console.log("Hola desde register.vue", state)
-
   if (!isFormValid.value) {
     error.value = "Por favor completa todos los campos correctamente."
     return
@@ -126,6 +124,7 @@ const handleRegister = async () => {
   isLoading.value = true
   error.value = null
 
+  
   try {
     const { data, error: supabaseError } = await supabase.auth.signUp({
       email: state.email,
@@ -135,6 +134,8 @@ const handleRegister = async () => {
           first_name: state.firstName,
           last_name: state.lastName,
           phone: state.phone,
+          verified: false,
+          verified_at: new Date(0),
         },
         // IMPORTANT: redirect here after clicking confirmation link
         emailRedirectTo: `${window.location.origin}/dashboard`
@@ -148,9 +149,18 @@ const handleRegister = async () => {
       console.log("User registered:", data)
       alert("Registro exitoso. Revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.")
     }
+
+    const { data2, error: fetchError } = await useFetch('/api/mail_conf', {
+      method: 'POST',
+      body: {
+        email: state.email,
+        firstName: state.firstName,
+      }
+    })
+
   } catch (err) {
     console.error(err)
-    error.value = "Error al registrar. Por favor, inténtalo de nuevo."
+    fetchError.value = "Error al registrar. Por favor, inténtalo de nuevo."
   } finally {
     isLoading.value = false
   }

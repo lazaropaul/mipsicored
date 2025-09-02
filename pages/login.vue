@@ -75,11 +75,22 @@ const handleLogin = async () => {
   error.value = null
 
   try {
-    const { data, error: supabaseError } = await supabase.auth.signInWithPassword({
+
+    const { data: verificationData } = await useFetch(`/api/check_verification?email=${email.value}`);
+    const verified = verificationData.value?.verified;
+
+    console.log(verified)
+
+    if (!verified) {
+      error.value = "Debes verificar tu correo electrónico antes de iniciar sesión."
+      isLoading.value = false
+      return
+    }
+
+    const { data: loginData, error: supabaseError } = await supabase.auth.signInWithPassword({
        email: email.value,
        password: password.value,
     })
-
 
     if (supabaseError) {
       // user hasn't confirmed email yet
@@ -90,16 +101,13 @@ const handleLogin = async () => {
       }
       console.error("Login error:", supabaseError)
     } else {
-      console.log("User logged in:", data)
+      console.log("User logged in:", loginData)
       router.push("/dashboard") // ✅ use Nuxt/Vue router for redirect
     }
   } catch (err) {
-    console.error(err)
     error.value = "Error al iniciar sesión. Por favor, inténtalo de nuevo."
   } finally {
     isLoading.value = false
-    console.log("Login data:", data)
-    console.log("Login error:", supabaseError)
   }
 }
 </script>
