@@ -94,6 +94,7 @@ const handleLogin = async () => {
 
     if (supabaseError) {
       // user hasn't confirmed email yet
+      console.error("EUEUEUEU" + supabaseError)
       if (supabaseError.message.toLowerCase().includes("confirm")) {
         error.value = "Debes confirmar tu correo electrónico antes de iniciar sesión."
       } else {
@@ -102,7 +103,7 @@ const handleLogin = async () => {
       console.error("Login error:", supabaseError)
     } else {
       console.log("User logged in:", loginData)
-      router.push("/dashboard") // ✅ use Nuxt/Vue router for redirect
+      router.push("/dashboard")
     }
   } catch (err) {
     error.value = "Error al iniciar sesión. Por favor, inténtalo de nuevo."

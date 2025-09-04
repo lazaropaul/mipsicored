@@ -1,4 +1,16 @@
 <template>
+
+  <div v-if="registerSuccess" class="flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-3">
+      <h2 class="text-lg font-bold">¡Registrado correctamente!</h2>
+      <p class="text-gray-600">Por favor <b>verifica tu correo electrónico</b> para activar tu cuenta.</p>
+      <a href="/login">
+        <button type="submit"
+          class="w-full py-2 px-4 bg-[#6A9997] hover:bg-[#5a8886] text-white font-medium rounded-md transition duration-200">Iniciar sesión</button>
+      </a>
+    </div>
+  </div>
+
   <div class="min-w-screen container flex items-center justify-center min-h-screen py-6 px-4">
     <div class="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
       <div class="p-6 space-y-6">
@@ -58,7 +70,9 @@
           </div>
 
           <div class="flex items-center space-x-2">
-            <input type="text" name="resetpassword" id="resetpassword" v-model="state.email" placeholder="correo@ejemplo.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]" />
+            <input type="text" name="resetpassword" id="resetpassword" v-model="state.email"
+              placeholder="correo@ejemplo.com"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#6A9997]" />
             <p @click="handleResetPassword" class="text-sm text-gray-600">¿Olvidaste tu contraseña?</p>
           </div>
 
@@ -83,9 +97,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { createClient } from '@supabase/supabase-js'
-const config = useRuntimeConfig()
-const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
 
 definePageMeta({
   middleware: 'guest'
@@ -103,6 +114,7 @@ const state = reactive({
 const acceptTerms = ref(false)
 const isLoading = ref(false)
 const error = ref(null)
+const registerSuccess = ref(false)
 
 const isFormValid = computed(() => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -124,46 +136,28 @@ const handleRegister = async () => {
   isLoading.value = true
   error.value = null
 
-  
-  try {
-    const { data, error: supabaseError } = await supabase.auth.signUp({
+  const { data: registerData, error: registerError } = useFetch("/api/register_user", {
+    method: "POST",
+    body: {
       email: state.email,
       password: state.password,
-      options: {
-        data: {
-          first_name: state.firstName,
-          last_name: state.lastName,
-          phone: state.phone,
-          verified: false,
-          verified_at: new Date(0),
-        },
-        // IMPORTANT: redirect here after clicking confirmation link
-        emailRedirectTo: `${window.location.origin}/dashboard`
-      }
-    })
+      firstName: state.firstName,
+      lastName: state.lastName,
+      phone: state.phone,
+    },
+  })
+  
+  isLoading.value = false
 
-    if (supabaseError) {
-      error.value = supabaseError.message
-      console.error(supabaseError)
-    } else {
-      console.log("User registered:", data)
-      alert("Registro exitoso. Revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.")
-    }
-
-    const { data2, error: fetchError } = await useFetch('/api/mail_conf', {
-      method: 'POST',
-      body: {
-        email: state.email,
-        firstName: state.firstName,
-      }
-    })
-
-  } catch (err) {
-    console.error(err)
-    fetchError.value = "Error al registrar. Por favor, inténtalo de nuevo."
-  } finally {
-    isLoading.value = false
+  if (registerError) {
+    console.log(registerError)
+    error.value = registerError
   }
+
+  if (registerData.value.success == true) {
+    registerSuccess.value = true
+  }
+
 }
 
 const handleResetPassword = () => {
@@ -186,6 +180,5 @@ const handleResetPassword = () => {
     isLoading.value = false
   }
 
-  console.log("Test function called")
 }
 </script>
