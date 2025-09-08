@@ -37,9 +37,9 @@
   
           <div class="text-center text-sm">
             ¿No tienes una cuenta?
-            <NuxtLink to="/register" class="text-[#6A9997] hover:underline ml-1">
+            <a href="/register" class="text-[#6A9997] hover:underline ml-1">
               Regístrate
-            </NuxtLink>
+            </a>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 const isLoading = ref(false)
-const error = ref(null)
+const error = ref("")
 
 const handleLogin = async () => {
   if (!email.value || !password.value) {
@@ -77,35 +77,33 @@ const handleLogin = async () => {
   try {
 
     const { data: verificationData } = await useFetch(`/api/check_verification?email=${email.value}`);
-    const verified = verificationData.value?.verified;
+    const verified = verificationData.value.verified;
 
-    console.log(verified)
-
-    if (!verified) {
+    
+    const { data: loginData, error: supabaseError } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value,
+    })
+    
+    if (!verified && !supabaseError) {
+      supabase.auth.signOut()  //Evitar crear una sesion sin que el usuario esté verificado
+      console.log("User is not verified");
       error.value = "Debes verificar tu correo electrónico antes de iniciar sesión."
       isLoading.value = false
       return
-    }
-
-    const { data: loginData, error: supabaseError } = await supabase.auth.signInWithPassword({
-       email: email.value,
-       password: password.value,
-    })
-
-    if (supabaseError) {
-      // user hasn't confirmed email yet
-      console.error("EUEUEUEU" + supabaseError)
-      if (supabaseError.message.toLowerCase().includes("confirm")) {
-        error.value = "Debes confirmar tu correo electrónico antes de iniciar sesión."
-      } else {
-        error.value = supabaseError.message
-      }
-      console.error("Login error:", supabaseError)
+    } else if (supabaseError && supabaseError.message.includes("Invalid login credentials")) {
+      console.log("Login failed:", supabaseError)
+      error.value = "Credenciales de inicio de sesión no válidas."
+    } else if (!verified && supabaseError) {
+      console.log("Login failed:", supabaseError);
+      error.value = supabaseError.message
+      isLoading.value = false
+      return
     } else {
-      console.log("User logged in:", loginData)
       router.push("/dashboard")
     }
   } catch (err) {
+    console.error(err)
     error.value = "Error al iniciar sesión. Por favor, inténtalo de nuevo."
   } finally {
     isLoading.value = false

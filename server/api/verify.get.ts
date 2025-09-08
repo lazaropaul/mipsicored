@@ -1,4 +1,5 @@
-import { createClient, type EmailOtpType } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+import { sendRedirect } from 'h3';
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
@@ -27,6 +28,7 @@ export default defineEventHandler(async (event) => {
     .single();
 
   if (verificationError) {
+    sendRedirect(event, `/error-verification`);
     return { success: false, error: verificationError.message };
   };
 
@@ -37,6 +39,7 @@ export default defineEventHandler(async (event) => {
 
   const user = users.users.find((u) => u.email === query.email);
   if (!user) {
+    sendRedirect(event, `/error-verification`);
     return { success: false, error: "User not found" };
   };
 
@@ -48,6 +51,14 @@ export default defineEventHandler(async (event) => {
     },
   });
 
+  const response = await supabase.from("verifications").delete().eq("email", email);
+
+  if (!error){
+    sendRedirect(event, `/login`);
+  } else {
+    sendRedirect(event, `/error-verification`);
+    // sendRedirect(event, `/error?msg=${error.message}`);
+  }
   return {
     success: true,
     user_id: data.user?.id,

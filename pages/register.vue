@@ -1,15 +1,18 @@
 <template>
 
-  <div v-if="registerSuccess" class="flex items-center justify-center min-h-screen">
-    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-3">
-      <h2 class="text-lg font-bold">¡Registrado correctamente!</h2>
-      <p class="text-gray-600">Por favor <b>verifica tu correo electrónico</b> para activar tu cuenta.</p>
-      <a href="/login">
-        <button type="submit"
-          class="w-full py-2 px-4 bg-[#6A9997] hover:bg-[#5a8886] text-white font-medium rounded-md transition duration-200">Iniciar sesión</button>
-      </a>
+  <Transition name="fade" class="absolute z-10 w-full h-screen bg-gray-100">
+    <div v-if="registerSuccess" class="flex items-center justify-center min-h-screen">
+      <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-3">
+        <h2 class="text-lg font-bold">¡Registrado correctamente!</h2>
+        <p class="text-gray-600">Por favor <b>verifica tu correo electrónico</b> para activar tu cuenta.</p>
+        <a href="/login">
+          <button type="submit"
+            class="w-full py-2 px-4 bg-[#6A9997] hover:bg-[#5a8886] text-white font-medium rounded-md transition duration-200">Iniciar
+            sesión</button>
+        </a>
+      </div>
     </div>
-  </div>
+  </Transition>
 
   <div class="min-w-screen container flex items-center justify-center min-h-screen py-6 px-4">
     <div class="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
@@ -86,9 +89,9 @@
 
         <div class="text-center text-sm">
           ¿Ya tienes una cuenta?
-          <NuxtLink to="/#" class="text-[#6A9997] hover:underline ml-1">
+          <a href="/login" class="text-[#6A9997] hover:underline ml-1">
             Iniciar sesión
-          </NuxtLink>
+          </a>
         </div>
       </div>
     </div>
@@ -128,15 +131,19 @@ const isFormValid = computed(() => {
 })
 
 const handleRegister = async () => {
+
+  isLoading.value = false
+  error.value = null
+  registerSuccess.value = false
+
   if (!isFormValid.value) {
     error.value = "Por favor completa todos los campos correctamente."
     return
   }
 
   isLoading.value = true
-  error.value = null
 
-  const { data: registerData, error: registerError } = useFetch("/api/register_user", {
+  const { data: registerData, error: registerError } = await useFetch("/api/register_user", {
     method: "POST",
     body: {
       email: state.email,
@@ -146,17 +153,17 @@ const handleRegister = async () => {
       phone: state.phone,
     },
   })
-  
-  isLoading.value = false
 
-  if (registerError) {
-    console.log(registerError)
-    error.value = registerError
-  }
+  console.log(registerError)
 
-  if (registerData.value.success == true) {
+  if (registerError.value != null && registerError.value.statusCode === 409) {
+    error.value = "Este correo electrónico ya está registrado."
+  } else if (registerError.value != null) {
+    error.value = registerError.value
+  } else if (registerData.value != null && registerData.value.success == true) {
     registerSuccess.value = true
   }
+  isLoading.value = false
 
 }
 
@@ -182,3 +189,15 @@ const handleResetPassword = () => {
 
 }
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

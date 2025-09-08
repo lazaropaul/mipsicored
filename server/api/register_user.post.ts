@@ -55,6 +55,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
+    console.log("User created:", data);
     return {
         success: true,
         message: "User created successfully",

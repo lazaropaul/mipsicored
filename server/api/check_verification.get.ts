@@ -26,7 +26,11 @@ export default defineEventHandler(async (event) => {
 
   const user = users.users.find((u) => u.email === query.email);
   if (!user || user.user_metadata.verified !== true) {
-    return { verified: false };
+    return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ verified: false });
+    });
+  });
   };
 
   console.log("User is verified:");

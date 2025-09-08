@@ -9,4 +9,7 @@ bucket = ".output/public"   # what gets served (Nuxt build output)
 SUPABASE_KEY = "public-anon-key"
 SUPABASE_URL = "public-anon-key"
 NOREPLY_PASSWD = "public-anon-key"
+SUPABASE_SECRET_KEY = "public-anon-key"
+SITEURL = "https://mipsicored.com
+
 

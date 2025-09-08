@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     expires_at: new Date(Date.now() + 1000 * 60 * 60), // 1h
   });
 
-  const verifyUrl = `http://localhost:3000/api/verify?token=${token}&email=${body.email}`
+  const verifyUrl = `${config.public.siteUrl}/api/verify?token=${token}&email=${body.email}`
 
   const transporter = nodemailer.createTransport({
     host: "mipsicored-com.correoseguro.dinaserver.com",
