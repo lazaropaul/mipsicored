@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   //TODO: Clean up spaghettti code
 
   // Check if running in development environment
-  if (import.meta.dev) {
+  if (process.env.PROD == 'false') {
     // Development
     const nodemailer = await import("nodemailer");
     const transporter = nodemailer.createTransport({
@@ -56,7 +56,8 @@ export default defineEventHandler(async (event) => {
     }
   } else {
     // Production
-    const { WorkerMailer } = await import("worker-mailer");
+    // Wrap the import so the bundler doesn’t try to eagerly resolve it:
+    const { WorkerMailer } = await import('worker-mailer');
     const mailer = await WorkerMailer.connect({
       credentials: {
         username: "no-reply@mipsicored.com",
