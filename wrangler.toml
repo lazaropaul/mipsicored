@@ -1,5 +1,7 @@
 name = "psicopito"
 compatibility_date = "2025-08-29"
+compatibility_flags = ["nodejs_compat"]
+# or compatibility_flags = ["nodejs_compat_v2"]
 main = ".output/server/index.mjs"
 
 [site]
