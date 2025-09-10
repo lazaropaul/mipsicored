@@ -3,7 +3,10 @@ import tailwindcss from "@tailwindcss/vite";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   nitro: {
-    preset: 'cloudflare',  // ensures Nuxt builds for CF Workers
+    preset: 'cloudflare-module',  // ensures Nuxt builds for CF Workers
+    rollupConfig: {
+      external: ['cloudflare:email', 'mimetext'], // exclude these from the bundle
+    }
   },
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
