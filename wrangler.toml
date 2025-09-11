@@ -2,6 +2,9 @@ name = "psicopito"
 compatibility_date = "2025-08-29"
 main = ".output/server/index.mjs"
 compatibility_flags = [ "nodejs_compat" ]
+send_email = [
+    {name = "SEB"},
+]
 
 [site]
 bucket = ".output/public"   # what gets served (Nuxt build output)
@@ -13,8 +16,3 @@ NOREPLY_PASSWD = "public-anon-key"
 SUPABASE_SECRET_KEY = "public-anon-key"
 SITEURL = "https://mipsicored.com"
 PROD = "true"
-
-# mailing
-send_email = [
-    {name = "maileerr", destination_address = "lazaro.roca.pol@gmail.com"},
-]
