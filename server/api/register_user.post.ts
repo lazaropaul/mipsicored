@@ -39,21 +39,21 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    try {
-      const mailData = await $fetch("/api/mail_conf", {
-        method: "POST",
-        body: {
-          email: body.email,
-          firstName: body.firstName,
-        },
-      });
-    } catch (error) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Internal Server Error",
-        message: (error as Error).message, // optional
-      });
-    }
+    // try {
+    //   const mailData = await $fetch("/api/mail_conf", {
+    //     method: "POST",
+    //     body: {
+    //       email: body.email,
+    //       firstName: body.firstName,
+    //     },
+    //   });
+    // } catch (error) {
+    //   throw createError({
+    //     statusCode: 500,
+    //     statusMessage: "Internal Server Error",
+    //     message: (error as Error).message, // optional
+    //   });
+    // }
 
     console.log("User created:", data);
     return {

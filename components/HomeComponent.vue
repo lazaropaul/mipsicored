@@ -119,7 +119,7 @@
       </div>
     </section>
 
-    <section id="pricing" class="py-16 bg-gradient-to-b from-[#fcfaf7] to-[#f8f3eb]">
+    <section v-if="false" id="pricing" class="py-16 bg-gradient-to-b from-[#fcfaf7] to-[#f8f3eb]">
         <TerapiasPrecios />
     </section>
 
