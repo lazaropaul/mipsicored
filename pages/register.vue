@@ -105,13 +105,22 @@ definePageMeta({
   middleware: 'guest'
 })
 
+// const state = reactive({
+//   email: undefined,
+//   password: undefined,
+//   confirmPassword: undefined,
+//   firstName: undefined,
+//   lastName: undefined,
+//   phone: undefined,
+// })
+
 const state = reactive({
-  email: undefined,
-  password: undefined,
-  confirmPassword: undefined,
-  firstName: undefined,
-  lastName: undefined,
-  phone: undefined,
+  email: "lazaro.roca.pol@gmail.com",
+  password: "Password123!",
+  confirmPassword: "Password123!",
+  firstName: "Pol",
+  lastName: "Lazzaro",
+  phone: "123-456-7890",
 })
 
 const acceptTerms = ref(false)
